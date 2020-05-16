@@ -48,7 +48,7 @@ class Play extends Phaser.Scene {
         });
 
         // player 1 score
-        this.p1Score = 0;
+        this.highScore = 0;
         // score display
         let scoreConfig = {
             fontFamily: 'Courier',
@@ -62,7 +62,8 @@ class Play extends Phaser.Scene {
             },
             fixedWidth: 100
         }
-        this.scoreLeft = this.add.text(69, 54, this.p1Score, scoreConfig);
+        this.scoreLeft = this.add.text(69, 54, this.highScore, scoreConfig);
+
 
         // game over flag
         this.gameOver = false;
@@ -80,9 +81,15 @@ class Play extends Phaser.Scene {
         // check key input for restart / menu
         if (this.gameOver && Phaser.Input.Keyboard.JustDown(keyF)) {
             this.scene.restart();
+            this.isPlaying = true;
+                highScore = this.highScore;
         }
+        
         if (this.gameOver && Phaser.Input.Keyboard.JustDown(keyLEFT)) {
             this.scene.start("menuScene");
+            this.isPlaying = false;
+                highScore = this.highScore;
+    
         }
 
         this.starfield.tilePositionX -= 3;  
@@ -135,8 +142,8 @@ class Play extends Phaser.Scene {
             boom.destroy();                     // remove explosion sprite
         });
         // score increment and repaint
-        this.p1Score += ship.points;
-        this.scoreLeft.text = this.p1Score;     
+        this.highScore += ship.points;
+        this.scoreLeft.text = this.highScore;     
         // play sound
         this.sound.play('sfx_explosion');  
     }
